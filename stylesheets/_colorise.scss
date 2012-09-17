@@ -23,7 +23,7 @@ $link-visited-color: darken($link-color, 10%) !default;
 $base-table-header-color: #c3d9ff !default;
 $base-table-stripe-color: #e5ecf9 !default;
 
-$saved-colorise: $base-color $alt-color $quiet-color $loud-color $header-color $base-background $alt-background $quiet-background $loud-background $header-background;
+$colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color $base-background $alt-background $quiet-background $loud-background $header-background;
 
 
 /** Calculate luma for a color **/
@@ -33,15 +33,51 @@ $saved-colorise: $base-color $alt-color $quiet-color $loud-color $header-color $
 	);
 }
 
-
-@mixin luma-colorise($color, $link, $background){
-	@debug "Calculate the luma for background... #{luma($background)}";
-	@debug "Calculate the luma for text color... #{luma($color)}";
-	@debug "Calculate the luma for link color... #{luma($link)}";
-	@if (luma($background) > 128){
-		@debug "A light background!!!";
-		while (luma($color) < luma($background) - 128){
+/** Choose a color with a specified luma threshold... Vary based on lightness, then saturation. **/
+@function luma-threshold($color, $threshold, $lighter: true){
+	$h: hue($color); $s: saturation($color); $l: lightness($color);
+	@if ($lighter){
+		$l: 5;
+	} @else {
+		$l: 95;
+	}
+	$color: hsl($h, 100, $l);
+	$notfound: (luma($color) - $threshold > 0) != $lighter;
+	@while ($notfound){
+		$color: hsl($h, 100, $l);
+		@if ((luma($color) - $threshold > 0) == $lighter){
+			@return $color;
 		}
+		@if ($lighter){
+			$l: $l + 5;
+		} @else {
+			$l: $l - 5;
+		}
+		@if ($l > 100){
+			$notfound: false;
+		}
+		@if ($l < 0){
+			$notfound: false;
+		}
+	}
+	@debug "Not found any color match threshold...";
+	@return $color;
+}
+
+
+@mixin luma-colorise($color, $link, $background, $color-threshold: 5){
+	@if (luma($background) > 128){
+		$threshold: luma($background) - 128;
+		@debug "A light background!!!";
+		$color: luma-threshold($color, $threshold, false);
+		$link: luma-threshold($link, $threshold, false);
+		@include dark-colorise($color, $link, $background, $color-threshold);
+	} @else {
+		$threshold: luma($background) + 128;
+		@debug "A dark background!!!";
+		$color: luma-threshold($color, $threshold);
+		$link: luma-threshold($link, $threshold);
+		@include light-colorise($color, $link, $background, $color-threshold);
 	}
 }
 
@@ -195,20 +231,20 @@ $saved-colorise: $base-color $alt-color $quiet-color $loud-color $header-color $
 
 /** Save current color scheme for later **/
 @mixin colorise-save(){
-	$saved-colorise: $base-color $alt-color $quiet-color $loud-color $header-color $base-background $alt-background $quiet-background $loud-background $header-background;
+	$colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color $base-background $alt-background $quiet-background $loud-background $header-background;
 }
-/** Restore the color settings from $saved-colorise **/
+/** Restore the color settings from $colorise-pallete **/
 @mixin colorise-restore(){
-	$base-color: nth($saved-colorise, 1);
-	$alt-color: nth($saved-colorise, 2);
-	$quiet-color: nth($saved-colorise, 3);
-	$loud-color: nth($saved-colorise, 4);
-	$header-color: nth($saved-colorise, 5);
-	$base-background: nth($saved-colorise, 6);
-	$alt-background: nth($saved-colorise, 7);
-	$quiet-background: nth($saved-colorise, 8);
-	$loud-background: nth($saved-colorise, 9);
-	$header-background: nth($saved-colorise, 10);
+	$base-color: nth($colorise-pallete, 1);
+	$alt-color: nth($colorise-pallete, 2);
+	$quiet-color: nth($colorise-pallete, 3);
+	$loud-color: nth($colorise-pallete, 4);
+	$header-color: nth($colorise-pallete, 5);
+	$base-background: nth($colorise-pallete, 6);
+	$alt-background: nth($colorise-pallete, 7);
+	$quiet-background: nth($colorise-pallete, 8);
+	$loud-background: nth($colorise-pallete, 9);
+	$header-background: nth($colorise-pallete, 10);
 }
 @mixin colorise-analogous($original-color) {
 	$support-color:adjust-hue($original-color,30);
@@ -227,4 +263,23 @@ $saved-colorise: $base-color $alt-color $quiet-color $loud-color $header-color $
 	$accent-color:adjust-hue($original-color,150);
 	@include colorise($support-color, $accent-color, $original-color);
 }
+
+@mixin luma-colorise-analogous($original-color) {
+	$support-color:adjust-hue($original-color,30);
+	$accent-color:adjust-hue($original-color,-30);
+	@include luma-colorise($support-color, $accent-color, $original-color);
+}
+
+@mixin luma-colorise-triadic($original-color) {
+	$support-color:adjust-hue($original-color,120);
+	$accent-color:adjust-hue($original-color,-120);
+	@include luma-colorise($support-color, $accent-color, $original-color);
+}
+
+@mixin luma-colorise-complement($original-color) {
+	$support-color:adjust-hue($original-color,210);
+	$accent-color:adjust-hue($original-color,150);
+	@include luma-colorise($support-color, $accent-color, $original-color);
+}
+
 
