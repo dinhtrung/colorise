@@ -65,3 +65,14 @@ The extension provide the following mixins:
 
 * `colorise-me($nested: true)`: Write background and color attributes for text, container and link. If `$nested = false`, the color is applied for `body` element. Leave default if you want to _colorise_ a region and all its child elements.
 * `colorise-bp($nested)`: Extend the colorise-me above, using [BlueprintCSS](http://blueprintcss.org) default colors attributes.
+
+### Experimentals: Using luma instead of color lightness
+
+See this link to understand what [luma](http://en.wikipedia.org/wiki/Luma_(video)) is: 
+
+This extension has some experimental mixins for luma color calculations:
+
+* `luma-colorise($text-color, $link-color, $background)`: Calculate the right color based on luma. It inspect the background color, and increase or decrease the text-color and link-color to match the background luma.
+* `luma-colorise-analogous($background)`: Like the original version, but use luma instead of lightness.
+* `luma-colorise-triadic($background)`: Like the original version, but use luma instead of lightness.
+* `luma-colorise-complement($background)`: Like the original version, but use luma instead of lightness.

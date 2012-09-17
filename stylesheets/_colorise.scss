@@ -55,9 +55,11 @@ $colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color
 		}
 		@if ($l > 100){
 			$notfound: false;
+			@return #fff;
 		}
 		@if ($l < 0){
 			$notfound: false;
+			@return #000;
 		}
 	}
 	@debug "Not found any color match threshold...";
@@ -67,13 +69,13 @@ $colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color
 
 @mixin luma-colorise($color, $link, $background, $color-threshold: 5){
 	@if (luma($background) > 128){
-		$threshold: luma($background) - 128;
+		$threshold: luma($background) - 150;
 		@debug "A light background!!!";
 		$color: luma-threshold($color, $threshold, false);
 		$link: luma-threshold($link, $threshold, false);
 		@include dark-colorise($color, $link, $background, $color-threshold);
 	} @else {
-		$threshold: luma($background) + 128;
+		$threshold: luma($background) + 150;
 		@debug "A dark background!!!";
 		$color: luma-threshold($color, $threshold);
 		$link: luma-threshold($link, $threshold);
