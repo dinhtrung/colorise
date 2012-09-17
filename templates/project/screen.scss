@@ -1,0 +1,61 @@
+@import "colorise";
+
+
+$base-color:  #333333;
+$alt-color: 	#666666;
+
+$quiet-color:    lighten($base-color, 20%);
+$loud-color:     darken($base-color, 13.33%);
+$header-color:   darken($base-color, 6.67%);
+
+$base-background: #ffffff;
+$alt-background:  #e5eCf9;
+
+$header-background:    darken($base-background, 20%);
+$quiet-background:     darken($base-background, 6.67%);
+$loud-background:   darken($base-background, 13.33%);
+
+$link-color:         #002166;
+$link-hover-color:   #440000;
+$link-focus-color:   $link-hover-color    ;
+$link-active-color:  lighten(adjust-hue($link-color, 120deg), 10%);
+$link-visited-color: darken($link-color, 10%);
+
+$base-table-header-color: #c3d9ff;
+$base-table-stripe-color: #e5ecf9;
+
+// Color the entire page....
+@include colorise-me(false);
+
+// Save existing colorise
+@include colorise-save();
+
+// Switch to another colorscheme... Using the current link color as base background and leave other colors for colorise to handle...
+@include colorise-analogous($link-color);
+// Color a region with BlueprintCSS style
+article {
+	@include colorise-bp();
+}
+
+// Restore the saved colorise...
+@include colorise-restore();
+
+// Generate another scheme... This time, using link hover color as background....
+@include colorise-complement($link-hover-color);
+
+// This time, we colorise the highlighted region...
+#highlighted {
+	@include colorise-bp();
+}
+
+// The last one...
+// Restore the saved colorise...
+@include colorise-restore();
+
+// Generate another scheme using Triadic colors... This time, using link hover color as background....
+@include colorise-triadic($link-hover-color);
+
+// This time, we colorise the highlighted region...
+#footer {
+	@include colorise-bp();
+}

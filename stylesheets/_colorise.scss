@@ -1,0 +1,230 @@
+// This is your framework's main stylesheet. Use it to import all default modules.
+
+$base-color:     #333333 !default;
+$alt-color: 	#666666 !default;
+
+$quiet-color:    lighten($base-color, 20%) !default;
+$loud-color:     darken($base-color, 13.33%) !default;
+$header-color:   darken($base-color, 6.67%) !default;
+
+$base-background: #ffffff !default;
+$alt-background:  #e5eCf9 !default;
+
+$header-background:    darken($base-background, 20%) !default;
+$quiet-background:     darken($base-background, 6.67%) !default;
+$loud-background:   darken($base-background, 13.33%) !default;
+
+$link-color:         #06c                  !default;
+$link-hover-color:   #09f                  !default;
+$link-focus-color:   $link-hover-color     !default;
+$link-active-color:  lighten(adjust-hue($link-color, 120deg), 10%) !default;
+$link-visited-color: darken($link-color, 10%) !default;
+
+$base-table-header-color: #c3d9ff !default;
+$base-table-stripe-color: #e5ecf9 !default;
+
+$saved-colorise: $base-color $alt-color $quiet-color $loud-color $header-color $base-background $alt-background $quiet-background $loud-background $header-background;
+
+
+/** Calculate luma for a color **/
+@function luma($color){
+	@return round(
+		((red($color)*299)+(green($color)*587)+(blue($color)*114))/1000
+	);
+}
+
+
+@mixin luma-colorise($color, $link, $background){
+	@debug "Calculate the luma for background... #{luma($background)}";
+	@debug "Calculate the luma for text color... #{luma($color)}";
+	@debug "Calculate the luma for link color... #{luma($link)}";
+	@if (luma($background) > 128){
+		@debug "A light background!!!";
+		while (luma($color) < luma($background) - 128){
+		}
+	}
+}
+
+@mixin colorise($color, $link, $background, $threshold: 5){
+  @if (lightness($background) > 50) {
+		/** This is a light background. Make sure its lightness is above 80 **/
+		@if (lightness($background) < 75){
+			$background: hsl(hue($background), saturation($background), 80);
+		}
+		// The lightness of the text and link should be less than 30
+		@if (lightness($color) > 15){
+			$color: hsl(hue($color), saturation($color), 15);
+		}
+		@if (lightness($link) > 15){
+			$link: hsl(hue($link), saturation($link), 15);
+		}
+		/**
+		Results of a light background in dark text
+		**/
+		@include dark-colorise($color, $link, $background, $threshold);
+	} @else {
+		/** This is a dark background. Make sure its lightness is less than 30 **/
+		@if (lightness($background) > 25){
+			$background: hsl(hue($background), saturation($background), 15);
+		}
+		@if (lightness($color) < 85){
+			$color: hsl(hue($color), saturation($color), 85);
+		}
+		@if (lightness($link) < 85){
+			$link: hsl(hue($link), saturation($link), 85);
+		}
+		@include light-colorise($color, $link, $background, $threshold);
+	}
+}
+
+
+/** Assign 2 dark color with a light background **/
+@mixin dark-colorise($color, $link, $background-color, $threshold: 10){
+	$base-color:     		$color;
+	$alt-color:  		 		lighten($base-color, $threshold);
+	$base-background:  	$background-color;
+	$link-color:        $link;
+	$alt-background:  	darken(hsl(hue($link), saturation($link), lightness($background-color)), $threshold);
+
+
+	$quiet-color:    lighten($base-color, 2*$threshold);
+	$loud-color:     darken($base-color, 1.333 * $threshold);
+	$header-color:   darken($base-color, 0.667 * $threshold);
+
+	$header-background:    darken($alt-background, 1.333*$threshold);
+	$loud-background:     darken($base-background, 1.333 * $threshold);
+	$quiet-background:   darken($base-background, 0.667 * $threshold);
+
+	$link-hover-color:   darken($link-color, 1.333 * $threshold);
+	$link-focus-color:   darken($link-color, 0.667 * $threshold);
+	$link-active-color:  lighten($link-hover-color, $threshold);
+	$link-visited-color: darken($link, $threshold);
+
+	$base-table-header-color: $loud-background;
+	$base-table-stripe-color: $quiet-background;
+}
+
+/** Assign 2 light color with a dark background **/
+@mixin light-colorise($color, $link, $background-color, $threshold: 10){
+	$base-color:     			$color;
+	$alt-color:  		 		darken($base-color, $threshold);
+	$link-color:         	$link;
+
+	$base-background:  		$background-color;
+
+	$alt-background:  		darken(hsl(hue($link), saturation($link), lightness($background-color)), $threshold);
+
+	$loud-color:    darken($base-color, 2*$threshold);
+	$quiet-color:     darken($base-color, 1.333 * $threshold);
+	$header-color:   lighten($base-color, 0.667 * $threshold);
+
+	$header-background:  lighten($alt-background, 1.333*$threshold);
+	$loud-background:    lighten($base-background, 1.333 * $threshold);
+	$quiet-background:   lighten($base-background, 0.667 * $threshold);
+
+	$link-hover-color:   lighten($link-color, 1.333 * $threshold);
+	$link-focus-color:   lighten($link-color, 0.667 * $threshold);
+	$link-active-color:  darken($link-hover-color, $threshold);
+	$link-visited-color: lighten($link, $threshold);
+}
+
+/** Minimal Colorise the region or entire page **/
+@mixin colorise-me($nested: true) {
+	@if ($nested){
+		color: $base-color;
+		background-color: $base-background;
+	} @else {
+		body { color: $base-color; background-color: $base-background; }
+	}
+	#{headers(all)} { 
+		color: $header-color;
+		a {	
+			@include link-colors($link-color, $link-hover-color, $link-active-color, $link-visited-color, $link-focus-color);	
+		}
+	}
+	a {	
+		@include link-colors($link-color, $link-hover-color, $link-active-color, $link-visited-color, $link-focus-color); 
+	}
+	a.active { 
+		color: $link-active-color; 
+	}  
+	a.hover { 
+		color: $link-hover-color; 
+	}
+}
+/** Colorise the region or entire page using Blueprint CSS colors **/
+@mixin colorise-bp($nested: true) {
+	@include colorise-me($nested);
+	hr { background: $alt-color; }
+  abbr, acronym, ins { 
+		border-bottom: 1px dotted $quiet-color;	
+	}
+ 	address, del 			{ color: $alt-color; }
+	blockquote 				{ background-color: $alt-background;	border-color: $quiet-color;
+		&:before, &:after { color: $quiet-color; } }
+	thead th { 
+		background-color: $header-background;
+		&.even, &:nth-child(2n) { 
+			background-color: $loud-background; 
+		}
+  }
+  tbody tr {
+    &.odd, &:nth-child(2n+1) {
+      td { background-color: $base-background;
+       		&.even, &:nth-child(2n) { background-color: $quiet-background; }
+      }
+      th { background-color: $base-background; }
+    }
+		&.even, &:nth-child(2n) {
+    	td { background-color: $quiet-background;
+      		&.even, &:nth-child(2n) { background-color: $loud-background; }
+    	}
+    	th { background-color: $alt-background; }
+  	}
+  }
+  tfoot {
+    th, td {
+      background-color: $quiet-background;
+      &.even, &:nth-child(2n) {
+        background-color: $header-background; } } 
+	}
+ 	caption         { background-color: $alt-background; }
+	kbd 						{ background-color: $alt-background; border: 1px solid $header-background; color: $loud-color; }
+}
+
+
+/** Save current color scheme for later **/
+@mixin colorise-save(){
+	$saved-colorise: $base-color $alt-color $quiet-color $loud-color $header-color $base-background $alt-background $quiet-background $loud-background $header-background;
+}
+/** Restore the color settings from $saved-colorise **/
+@mixin colorise-restore(){
+	$base-color: nth($saved-colorise, 1);
+	$alt-color: nth($saved-colorise, 2);
+	$quiet-color: nth($saved-colorise, 3);
+	$loud-color: nth($saved-colorise, 4);
+	$header-color: nth($saved-colorise, 5);
+	$base-background: nth($saved-colorise, 6);
+	$alt-background: nth($saved-colorise, 7);
+	$quiet-background: nth($saved-colorise, 8);
+	$loud-background: nth($saved-colorise, 9);
+	$header-background: nth($saved-colorise, 10);
+}
+@mixin colorise-analogous($original-color) {
+	$support-color:adjust-hue($original-color,30);
+	$accent-color:adjust-hue($original-color,-30);
+	@include colorise($support-color, $accent-color, $original-color);
+}
+
+@mixin colorise-triadic($original-color) {
+	$support-color:adjust-hue($original-color,120);
+	$accent-color:adjust-hue($original-color,-120);
+	@include colorise($support-color, $accent-color, $original-color);
+}
+
+@mixin colorise-complement($original-color) {
+	$support-color:adjust-hue($original-color,210);
+	$accent-color:adjust-hue($original-color,150);
+	@include colorise($support-color, $accent-color, $original-color);
+}
+
