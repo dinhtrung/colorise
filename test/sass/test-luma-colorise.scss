@@ -1,0 +1,47 @@
+@import "../../stylesheets/colorise";
+/* Generate a test color list... */
+@mixin test-colorise(){
+	background-color: $base-background;
+	color: $base-color;
+	.base-color { color: $base-color; } 
+	.alt-color { color: $alt-color; }
+	.quiet-color { color: $quiet-color; } 
+	.loud-color { color: $loud-color; }
+	.header-color { color: $header-color; } 
+	.base-background { background-color: $base-background; } 
+	.alt-background{ background-color: $alt-background; }
+	.quiet-background { background-color: $quiet-background; }
+	.loud-background { background-color: $loud-background; } 
+  .header-background { background-color: $header-background; } 
+	.link-color { color: $link-color; }
+	.link-hover-color { color: $link-hover-color; } 
+	.link-focus-color { color: $link-focus-color; }
+	.link-active-color { color: $link-active-color; } 
+	.link-visited-color { color: $link-visited-color; } 
+	.base-table-header-color { background-color: $base-table-header-color; } 
+	.base-table-stripe-color { background-color: $base-table-stripe-color; }
+}
+
+$base-background-list:aliceblue, antiquewhite, aqua, aquamarine, azure, beige, bisque, black, blanchedalmond, blue, blueviolet, brown, burlywood, cadetblue, chartreuse, chocolate, coral, cornflowerblue, cornsilk, crimson, cyan, darkblue, darkcyan, darkgoldenrod, darkgray, darkgreen, darkkhaki, darkmagenta, darkolivegreen, darkorange, darkorchid, darkred, darksalmon, darkseagreen, darkslateblue, darkslategray, darkslategrey, darkturquoise, darkviolet, deeppink, deepskyblue, dimgray, dodgerblue, firebrick, floralwhite, forestgreen, fuchsia, gainsboro, ghostwhite, gold, goldenrod, gray, green, greenyellow, honeydew, hotpink, indianred, indigo, ivory, khaki, lavender, lavenderblush, lawngreen, lemonchiffon, lightblue, lightcoral, lightcyan, lightgoldenrodyellow, lightgray, lightgreen, lightpink, lightsalmon, lightseagreen, lightskyblue, lightslategray, lightsteelblue, lightyellow, lime, limegreen, linen, magenta, maroon, mediumaquamarine, mediumblue, mediumorchid, mediumpurple, mediumseagreen, mediumslateblue, mediumspringgreen, mediumturquoise, mediumvioletred, midnightblue, mintcream, mistyrose, moccasin, navajowhite, navy, oldlace, olive, olivedrab, orange, orangered, orchid, palegoldenrod, palegreen, paleturquoise, palevioletred, papayawhip, peachpuff, peru, pink, plum, powderblue, purple, red, rosybrown, royalblue, saddlebrown, salmon, sandybrown, seagreen, seashell, sienna, silver, skyblue, slateblue, slategray, snow, springgreen, steelblue, tan, teal, thistle, tomato, turquoise, violet, wheat, white, whitesmoke, yellow, yellowgreen;
+
+
+@each $base-bg in $base-background-list {
+		@debug "Processing color #{$base-bg}";
+		.#{$base-bg}{
+			nav & { background-color: $base-bg; }
+			.analogous{
+				@include luma-colorise-analogous($base-bg);
+				@include test-colorise;
+			}
+
+			.triadic{
+				@include luma-colorise-triadic($base-bg);
+				@include test-colorise;
+			}
+
+			.complement{
+				@include luma-colorise-complement($base-bg);
+				@include test-colorise;
+			}
+		}
+}
