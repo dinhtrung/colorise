@@ -1,5 +1,5 @@
 // This is your framework's main stylesheet. Use it to import all default modules.
-
+@import "compass/utilities/color/contrast";
 $base-color:     #333333 !default;
 $alt-color: 	#666666 !default;
 
@@ -23,7 +23,7 @@ $link-visited-color: darken($link-color, 10%) !default;
 $base-table-header-color: #c3d9ff !default;
 $base-table-stripe-color: #e5ecf9 !default;
 
-$colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color $base-background $alt-background $quiet-background $loud-background $header-background;
+$colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color $base-background $alt-background $quiet-background $loud-background $header-background $link-color $link-hover-color $link-focus-color $link-active-color $link-visited-color $base-table-header-color $base-table-stripe-color;
 
 
 /** Calculate luma for a color **/
@@ -70,13 +70,11 @@ $colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color
 @mixin luma-colorise($color, $link, $background, $color-threshold: 5){
 	@if (luma($background) > 128){
 		$threshold: luma($background) - 150;
-		@debug "A light background!!!";
 		$color: luma-threshold($color, $threshold, false);
 		$link: luma-threshold($link, $threshold, false);
 		@include dark-colorise($color, $link, $background, $color-threshold);
 	} @else {
 		$threshold: luma($background) + 150;
-		@debug "A dark background!!!";
 		$color: luma-threshold($color, $threshold);
 		$link: luma-threshold($link, $threshold);
 		@include light-colorise($color, $link, $background, $color-threshold);
@@ -129,17 +127,17 @@ $colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color
 	$loud-color:     darken($base-color, 1.333 * $threshold);
 	$header-color:   darken($base-color, 0.667 * $threshold);
 
-	$header-background:    darken($alt-background, 1.333*$threshold);
+	$header-background:   darken($alt-background, 1.333 * $threshold);
 	$loud-background:     darken($base-background, 1.333 * $threshold);
-	$quiet-background:   darken($base-background, 0.667 * $threshold);
+	$quiet-background:    darken($base-background, 0.667 * $threshold);
 
 	$link-hover-color:   darken($link-color, 1.333 * $threshold);
 	$link-focus-color:   darken($link-color, 0.667 * $threshold);
 	$link-active-color:  lighten($link-hover-color, $threshold);
 	$link-visited-color: darken($link, $threshold);
 
-	$base-table-header-color: $loud-background;
-	$base-table-stripe-color: $quiet-background;
+	$base-table-header-color: darken($alt-background, 0.667 * $threshold);
+	$base-table-stripe-color: darken(hsl(hue($base-color), saturation($link), lightness($base-background)), 0.667 * $threshold);
 }
 
 /** Assign 2 light color with a dark background **/
@@ -164,6 +162,9 @@ $colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color
 	$link-focus-color:   lighten($link-color, 0.667 * $threshold);
 	$link-active-color:  darken($link-hover-color, $threshold);
 	$link-visited-color: lighten($link, $threshold);
+
+	$base-table-header-color: $loud-background;
+	$base-table-stripe-color: $quiet-background;
 }
 
 /** Minimal Colorise the region or entire page **/
@@ -174,66 +175,60 @@ $colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color
 	} @else {
 		body { color: $base-color; background-color: $base-background; }
 	}
-	#{headers(all)} { 
+	#{headers(all)} {
 		color: $header-color;
-		a {	
-			@include link-colors($link-color, $link-hover-color, $link-active-color, $link-visited-color, $link-focus-color);	
+		a {
+			@include link-colors($link-color, $link-hover-color, $link-active-color, $link-visited-color, $link-focus-color);
 		}
 	}
-	a {	
-		@include link-colors($link-color, $link-hover-color, $link-active-color, $link-visited-color, $link-focus-color); 
+	a {
+		@include link-colors($link-color, $link-hover-color, $link-active-color, $link-visited-color, $link-focus-color);
 	}
-	a.active { 
-		color: $link-active-color; 
-	}  
-	a.hover { 
-		color: $link-hover-color; 
+	a.active {
+		color: $link-active-color;
+	}
+	a.hover {
+		color: $link-hover-color;
 	}
 }
 /** Colorise the region or entire page using Blueprint CSS colors **/
 @mixin colorise-bp($nested: true) {
 	@include colorise-me($nested);
 	hr { background: $alt-color; }
-  abbr, acronym, ins { 
-		border-bottom: 1px dotted $quiet-color;	
+  abbr, acronym, ins {
+		border-bottom: 1px dotted $quiet-color;
 	}
- 	address, del 			{ color: $alt-color; }
+ 	address 			{ color: $alt-color; }
 	blockquote 				{ background-color: $alt-background;	border-color: $quiet-color;
 		&:before, &:after { color: $quiet-color; } }
-	thead th { 
-		background-color: $header-background;
-		&.even, &:nth-child(2n) { 
-			background-color: $loud-background; 
-		}
+	thead th {
+		background-color: $base-table-header-color;
   }
   tbody tr {
     &.odd, &:nth-child(2n+1) {
-      td { background-color: $base-background;
-       		&.even, &:nth-child(2n) { background-color: $quiet-background; }
-      }
+      td { background-color: $base-background; }
       th { background-color: $base-background; }
     }
 		&.even, &:nth-child(2n) {
-    	td { background-color: $quiet-background;
-      		&.even, &:nth-child(2n) { background-color: $loud-background; }
-    	}
+    	td { background-color: $base-table-stripe-color; 	}
     	th { background-color: $alt-background; }
   	}
   }
   tfoot {
     th, td {
-      background-color: $quiet-background;
-      &.even, &:nth-child(2n) {
-        background-color: $header-background; } } 
+      background-color:  $base-table-header-color;
+		}
 	}
- 	caption         { background-color: $alt-background; }
+ 	caption         { background-color: $loud-background; }
 	kbd 						{ background-color: $alt-background; border: 1px solid $header-background; color: $loud-color; }
+	var { color: $loud-color; }
+	samp, del { color: $quiet-color; }
 }
 
 
 /** Save current color scheme for later **/
 @mixin colorise-save(){
-	$colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color $base-background $alt-background $quiet-background $loud-background $header-background;
+	$colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color $base-background $alt-background $quiet-background $loud-background $header-background $link-color $link-hover-color $link-focus-color $link-active-color $link-visited-color $base-table-header-color $base-table-stripe-color;
 }
 /** Restore the color settings from $colorise-pallete **/
 @mixin colorise-restore(){
@@ -247,7 +242,59 @@ $colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color
 	$quiet-background: nth($colorise-pallete, 8);
 	$loud-background: nth($colorise-pallete, 9);
 	$header-background: nth($colorise-pallete, 10);
+	$link-color: nth($colorise-pallete, 11);
+	$link-hover-color: nth($colorise-pallete, 12);
+	$link-focus-color: nth($colorise-pallete, 13);
+	$link-active-color: nth($colorise-pallete, 14);
+	$link-visited-color: nth($colorise-pallete, 15);
+	$base-table-header-color: nth($colorise-pallete, 16);
+	$base-table-stripe-color: nth($colorise-pallete, 17);
 }
+
+// Usage:
+//HTML:
+//<div class="demo-section">
+
+//</div>
+//div.classname {
+//	@include colorise-test;
+//}
+
+@mixin colorise-info($color){
+	background-color: $color;
+	color: contrast-color($color, black, white);
+	&:after {
+		content: "Hex: #{$color} - RGB: #{red($color)}, #{green($color)}, #{blue($color)} - HSL:  #{hue($color)}, #{saturation($color)}, #{lightness($color)} - Luma: #{luma($color)}";
+		color: gray;
+		background-color: white;
+		display: block;
+		font-size: 75%;
+		text-align: right;
+	}
+}
+@mixin colorise-test(){
+	background: $base-background;
+	.base-color   		{ @include colorise-info($base-color); }
+	.alt-color   			{ @include colorise-info($alt-color);	}
+	.quiet-color   		{ @include colorise-info($quiet-color); }
+	.loud-color   		{ @include colorise-info($loud-color); }
+	h1,h2,h3,h4,h5,h6,.header-color   	{ @include colorise-info($header-color); }
+
+	.base-background   	{ @include colorise-info($base-background); }
+	.alt-background   	{ @include colorise-info($alt-background); }
+	.quiet-background   { @include colorise-info($quiet-background); }
+	.loud-background   	{ @include colorise-info($loud-background); }
+	.block-title, .header-background  { @include colorise-info($header-background); }
+
+	.link-color   			{ @include colorise-info($link-color); }
+	.link-focus-color   { @include colorise-info($link-focus-color); }
+	.link-hover-color   { @include colorise-info($link-hover-color); }
+	.link-active-color  { @include colorise-info($link-active-color); }
+	.link-visited-color { @include colorise-info($link-visited-color); }
+	.base-table-header-color { @include colorise-info($base-table-header-color); }
+	.base-table-stripe-color { @include colorise-info($base-table-stripe-color); }
+}
+
 @mixin colorise-analogous($original-color) {
 	$support-color:adjust-hue($original-color,30);
 	$accent-color:adjust-hue($original-color,-30);
@@ -283,5 +330,3 @@ $colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color
 	$accent-color:adjust-hue($original-color,150);
 	@include luma-colorise($support-color, $accent-color, $original-color);
 }
-
-
