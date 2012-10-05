@@ -220,9 +220,11 @@ $colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color
 		}
 	}
  	caption         { background-color: $loud-background; }
-	kbd 						{ background-color: $alt-background; border: 1px solid $header-background; color: $loud-color; }
-	var { color: $loud-color; }
-	samp, del { color: $quiet-color; }
+	kbd 						{ color: $loud-color; background-color: $quiet-background; border-color: $loud-background; }
+	var 						{ color: $loud-color; }
+	samp, del 			{ color: $quiet-color; }
+	code						{ color: $header-color; background-color: $quiet-background; border-color: $loud-background; }
+	pre							{ background-color: $loud-background; }
 }
 
 
