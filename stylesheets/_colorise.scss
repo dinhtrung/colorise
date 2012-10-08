@@ -1,27 +1,27 @@
 // This is your framework's main stylesheet. Use it to import all default modules.
 @import "compass/utilities/color/contrast";
-$base-color:     #333333 !default;
-$alt-color: 	#666666 !default;
+$base-color:     #002b36 !default;
+$alt-color: 	#586e75 !default;
 
-$quiet-color:    lighten($base-color, 20%) !default;
-$loud-color:     darken($base-color, 13.33%) !default;
-$header-color:   darken($base-color, 6.67%) !default;
+$quiet-color:    #073642 !default;
+$loud-color:     #657b83 !default;
+$header-color:   #839496 !default;
 
-$base-background: #ffffff !default;
-$alt-background:  #e5eCf9 !default;
+$base-background: #fdf6e3 !default;
+$alt-background:  #eee8d5 !default;
 
-$header-background:    darken($base-background, 20%) !default;
+$header-background:    #93a1a1 !default;
 $quiet-background:     darken($base-background, 6.67%) !default;
 $loud-background:   darken($base-background, 13.33%) !default;
 
-$link-color:         #06c                  !default;
-$link-hover-color:   #09f                  !default;
-$link-focus-color:   $link-hover-color     !default;
-$link-active-color:  lighten(adjust-hue($link-color, 120deg), 10%) !default;
-$link-visited-color: darken($link-color, 10%) !default;
+$link-color:         #268bd2 !default;
+$link-hover-color:   #dc322f !default;
+$link-focus-color:   #2aa198 !default;
+$link-active-color:  #859900 !default;
+$link-visited-color: #d33682 !default;
 
-$base-table-header-color: #c3d9ff !default;
-$base-table-stripe-color: #e5ecf9 !default;
+$base-table-header-color: #93a1a1 !default;
+$base-table-stripe-color: #eee8d5 !default;
 
 $colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color $base-background $alt-background $quiet-background $loud-background $header-background $link-color $link-hover-color $link-focus-color $link-active-color $link-visited-color $base-table-header-color $base-table-stripe-color;
 
