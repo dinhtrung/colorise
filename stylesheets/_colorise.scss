@@ -1,5 +1,6 @@
 // This is your framework's main stylesheet. Use it to import all default modules.
 @import "compass/utilities/color/contrast";
+@import "compass/typography/links";
 $base-color:     #002b36 !default;
 $alt-color: 	#586e75 !default;
 
@@ -167,67 +168,6 @@ $colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color
 	$base-table-stripe-color: $quiet-background;
 }
 
-/** Minimal Colorise the region or entire page **/
-@mixin colorise-me($nested: true) {
-	@if ($nested){
-		color: $base-color;
-		background-color: $base-background;
-	} @else {
-		body { color: $base-color; background-color: $base-background; }
-	}
-	#{headers(all)} {
-		color: $header-color;
-		a {
-			@include link-colors($link-color, $link-hover-color, $link-active-color, $link-visited-color, $link-focus-color);
-		}
-	}
-	a {
-		@include link-colors($link-color, $link-hover-color, $link-active-color, $link-visited-color, $link-focus-color);
-	}
-	a.active {
-		color: $link-active-color;
-	}
-	a.hover {
-		color: $link-hover-color;
-	}
-}
-/** Colorise the region or entire page using Blueprint CSS colors **/
-@mixin colorise-bp($nested: true) {
-	@include colorise-me($nested);
-	hr { background: $alt-color; }
-  abbr, acronym, ins {
-		border-bottom: 1px dotted $quiet-color;
-	}
- 	address 			{ color: $alt-color; }
-	blockquote 				{ background-color: $alt-background;	border-color: $quiet-color;
-		&:before, &:after { color: $quiet-color; } }
-	thead th {
-		background-color: $base-table-header-color;
-  }
-  tbody tr {
-    &.odd, &:nth-child(2n+1) {
-      td { background-color: $base-background; }
-      th { background-color: $base-background; }
-    }
-		&.even, &:nth-child(2n) {
-    	td { background-color: $base-table-stripe-color; 	}
-    	th { background-color: $alt-background; }
-  	}
-  }
-  tfoot {
-    th, td {
-      background-color:  $base-table-header-color;
-		}
-	}
- 	caption         { background-color: $loud-background; }
-	kbd 						{ color: $loud-color; background-color: $quiet-background; border-color: $loud-background; }
-	var 						{ color: $loud-color; }
-	samp, del 			{ color: $quiet-color; }
-	code						{ color: $header-color; background-color: $quiet-background; border-color: $loud-background; }
-	pre							{ background-color: $loud-background; }
-}
-
-
 /** Save current color scheme for later **/
 @mixin colorise-save(){
 	$colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color $base-background $alt-background $quiet-background $loud-background $header-background $link-color $link-hover-color $link-focus-color $link-active-color $link-visited-color $base-table-header-color $base-table-stripe-color;
@@ -331,4 +271,135 @@ $colorise-pallete: $base-color $alt-color $quiet-color $loud-color $header-color
 	$support-color:adjust-hue($original-color,210);
 	$accent-color:adjust-hue($original-color,150);
 	@include luma-colorise($support-color, $accent-color, $original-color);
+}
+
+
+/** Color schemes **/
+
+/** Minimal Colorise the region or entire page **/
+@mixin colorise-me($nested: true) {
+	@if ($nested){
+		color: $base-color;
+		background-color: $base-background;
+	} @else {
+		body { color: $base-color; background-color: $base-background; }
+	}
+	#{headers(all)} {
+		color: $header-color;
+		a {
+			@include link-colors($link-color, $link-hover-color, $link-active-color, $link-visited-color, $link-focus-color);
+		}
+	}
+	a {
+		@include link-colors($link-color, $link-hover-color, $link-active-color, $link-visited-color, $link-focus-color);
+	}
+	a.active {
+		color: $link-active-color;
+	}
+	a.hover {
+		color: $link-hover-color;
+	}
+}
+/** Colorise the region or entire page using Blueprint CSS colors **/
+@mixin colorise-bp($nested: true) {
+	@include colorise-me($nested);
+	hr { background: $alt-color; }
+  abbr, acronym, ins {
+		border-bottom: 1px dotted $quiet-color;
+	}
+ 	address 			{ color: $alt-color; }
+	blockquote 				{ background-color: $alt-background;	border-color: $quiet-color;
+		&:before, &:after { color: $quiet-color; } }
+	thead th {
+		background-color: $base-table-header-color;
+  }
+  tbody tr {
+    &.odd, &:nth-child(2n+1) {
+      td { background-color: $base-background; }
+      th { background-color: $base-background; }
+    }
+		&.even, &:nth-child(2n) {
+    	td { background-color: $base-table-stripe-color; 	}
+    	th { background-color: $alt-background; }
+  	}
+  }
+  tfoot {
+    th, td {
+      background-color:  $base-table-header-color;
+		}
+	}
+ 	caption         { background-color: $loud-background; }
+	kbd 						{ color: $loud-color; background-color: $quiet-background; border-color: $loud-background; }
+	var 						{ color: $loud-color; }
+	samp, del 			{ color: $quiet-color; }
+	code						{ color: $header-color; background-color: $quiet-background; border-color: $loud-background; }
+	pre							{ background-color: $loud-background; }
+}
+
+/** Solarize colors **/
+$base03:    #002b36;
+$base02:    #073642;
+$base01:    #586e75;
+$base00:    #657b83;
+$base0:     #839496;
+$base1:     #93a1a1;
+$base2:     #eee8d5;
+$base3:     #fdf6e3;
+$yellow:    #b58900;
+$orange:    #cb4b16;
+$red:       #dc322f;
+$magenta:   #d33682;
+$violet:    #6c71c4;
+$blue:      #268bd2;
+$cyan:      #2aa198;
+$green:     #859900;
+@mixin solarize-dark($nested: true){
+	$base-background: $base03;
+	$alt-background: $base02;
+	$header-background: $red;
+	$loud-background: $orange;
+	$quiet-background: $yellow;
+
+	$base-color: $base0;
+	$alt-color: $base00;
+	$loud-color: $magenta;
+	$quiet-color: $violet;
+	$header-color: $green;
+
+	$link-color: $blue;
+	$link-visited-color: $blue;
+	$link-hover-color: $cyan;
+	$link-active-color: $cyan;
+	$link-focus-color: $cyan;
+
+	$base-table-header-color: $base01;
+	$base-table-stripe-color: $base02;
+
+	@include colorise-bp($nested);
+}
+
+/** Solarize colors **/
+@mixin solarize-light($nested: true){
+	$base-background: $base3;
+	$alt-background: $base2;
+	$header-background: $red;
+	$loud-background: $orange;
+	$quiet-background: $yellow;
+
+	$base-color: $base0;
+	$alt-color: $base00;
+	$loud-color: $magenta;
+	$quiet-color: $violet;
+	$header-color: $green;
+
+	$link-color: $blue;
+	$link-visited-color: $blue;
+	$link-hover-color: $cyan;
+	$link-active-color: $cyan;
+	$link-focus-color: $cyan;
+
+	$base-table-header-color: $base01;
+	$base-table-stripe-color: $base02;
+
+	@include colorise-bp($nested);
 }
