@@ -1,0 +1,36 @@
+body { font-size: 16px; font-family: arial, sans-serif; }
+
+nav { position: fixed; width: 200px; top: 30px;  }
+nav li { float: left; margin: 2px; list-style: none; width: 20px; height: 20px; overflow: hidden; border: 1px solid black; }
+nav a { display: block; list-style: none; width: 20px; height: 20px; color: transparent; }
+
+#main { margin-left: 220px; }
+
+article {
+	width: 80%;
+	margin-left: auto;
+	margin-right: auto;
+}
+article ul { padding: 0; margin: 0; }
+article li { padding: 5px 1em; list-style: none; margin: 0; }
+article h1, article h2 { text-align: center; clear: both; }
+
+section {
+	width: 30%;
+	margin: 1.5em 0;
+	padding: 1.5em 1.5%;
+	float: left;
+}
+section li {
+	display: block; position: relative; margin: 3px 5px;
+	&:after {
+		position: relative;
+		display: none;
+		text-align: justify;
+		left: 33%;
+		width: 67%;
+	}
+	&:hover:after {
+		display: block;
+	}
+}
