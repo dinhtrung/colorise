@@ -9,18 +9,18 @@ $base-background-list:aliceblue, antiquewhite, aqua, aquamarine, azure, beige, b
 		.#{$base-bg}{
 			nav & { background-color: $base-bg; }
 			.analogous{
-				@include luma-colorise-analogous($base-bg);
-				@include colorise-bp;
+				@include coloriseLumaAnalogous($base-bg);
+				@include coloriseBp;
 			}
 
 			.triadic{
-				@include luma-colorise-triadic($base-bg);
-				@include colorise-bp;
+				@include coloriseLumaTriadic($base-bg);
+				@include coloriseBp;
 			}
 
 			.complement{
-				@include luma-colorise-complement($base-bg);
-				@include colorise-bp;
+				@include coloriseLumaComplement($base-bg);
+				@include coloriseBp;
 			}
 		}
 }

@@ -1,0 +1,30 @@
+/* line 1, ../sass/layout.scss */
+body {
+  width: 90%;
+  margin: 50px auto;
+  position: relative;
+}
+
+/* line 7, ../sass/layout.scss */
+nav {
+  position: static;
+  height: 550px;
+  width: 220px;
+  left: 0;
+  top: 0;
+  overflow: scroll;
+}
+
+/* line 16, ../sass/layout.scss */
+header, #main {
+  padding-left: 220px;
+}
+
+/* line 20, ../sass/layout.scss */
+article {
+  float: left;
+  width: 40%;
+  margin-left: 5%;
+  padding: 0.5em 1em;
+  border: 1px solid gray;
+}

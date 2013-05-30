@@ -186,7 +186,9 @@ HEREDOC;
 		<link href='./css/test.css' rel='stylesheet' />
   </head>
   <body>
-		<h1>Color Name recognized by CSS</h1>
+  		<header>
+			<h1>Color Name recognized by CSS</h1>
+		</header>
 		<nav>
 			<?php foreach ($colornames as $name): ?>
 				<li class="<?php echo strtolower(trim($name)); ?>"><a href="#<?php echo strtolower(trim($name)); ?>" class="link-color" title="<?php echo $name; ?>"><?php echo $name; ?></a></li>

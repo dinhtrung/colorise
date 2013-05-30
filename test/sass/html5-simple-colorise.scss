@@ -9,21 +9,21 @@ $base-background-list:aliceblue, antiquewhite, aqua, aquamarine, azure, beige, b
 		.#{$base-bg}{
 			nav & { background-color: $base-bg; }
 			.analogous{
-				@include scheme-analogous($base-bg);
-				@include colorise-simple;
-				@include colorise-bp;
+				@include schemeAnalogous($base-bg);
+				@include coloriseSimple;
+				@include coloriseBp;
 			}
 
 			.triadic{
-				@include scheme-triadic($base-bg);
-				@include colorise-simple;
-				@include colorise-bp;
+				@include schemeTriadic($base-bg);
+				@include coloriseSimple;
+				@include coloriseBp;
 			}
 
 			.complement{
-				@include scheme-complement($base-bg);
-				@include colorise-simple;
-				@include colorise-bp;
+				@include schemeComplement($base-bg);
+				@include coloriseSimple;
+				@include coloriseBp;
 			}
 		}
 }

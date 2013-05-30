@@ -9,17 +9,17 @@ $base-background-list:aliceblue, antiquewhite, aqua, aquamarine, azure, beige, b
 		.#{$base-bg}{
 			nav & { background-color: $base-bg; }
 			.analogous{
-				@include colorise-analogous($base-bg);
+				@include coloriseAnalogous($base-bg);
 				@include colorise-test;
 			}
 
 			.triadic{
-				@include colorise-triadic($base-bg);
+				@include coloriseTriadic($base-bg);
 				@include colorise-test;
 			}
 
 			.complement{
-				@include colorise-complement($base-bg);
+				@include coloriseComplement($base-bg);
 				@include colorise-test;
 			}
 		}
