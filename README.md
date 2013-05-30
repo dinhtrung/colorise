@@ -18,29 +18,33 @@ In your scss file:
 
 The extension using Compass blueprint color name for convenient:
 
+__The color names, mixin and function are now in camelCase__
+
 ~~~
-$base-color:     #333333 !default;			// Text color
-$alt-color: 	#666666 !default;					// Alternate text color
+$baseColor:	#002b36 !default;
+$altColor:		#586e75 !default;
 
-$quiet-color:    lighten($base-color, 20%) !default;		// 	Lighter than text color
-$loud-color:     darken($base-color, 13.33%) !default;	//	Darker than text color
-$header-color:   darken($base-color, 6.67%) !default;		//  Normally used for headers
+$quietColor:    #073642 !default;
+$loudColor:     #657b83 !default;
+$headerColor:   #839496 !default;
 
-$base-background: #ffffff !default;											// Original background color
-$alt-background:  #e5eCf9 !default;											// Alternate background color
+$baseBackground: 		#fdf6e3 !default;
+$altBackground:  		#eee8d5 !default;
 
-$header-background:    darken($base-background, 20%) !default;		// Pair up with $header-color
-$quiet-background:     darken($base-background, 6.67%) !default;	// Pair up with $quiet-color
-$loud-background:   darken($base-background, 13.33%) !default;		// Pair up with $loud-background
+$headerBackground:    	#93a1a1 !default;
+$quietBackground:     	darken($baseBackground, 6.67%) !default;
+$loudBackground:   		darken($baseBackground, 13.33%) !default;
 
-$link-color:         #06c                  !default;							// Color of anchor and links
-$link-hover-color:   #09f                  !default;							// When hover
-$link-focus-color:   $link-hover-color     !default;							// Focus state
-$link-active-color:  lighten(adjust-hue($link-color, 120deg), 10%) !default;		// Active state
-$link-visited-color: darken($link-color, 10%) !default;						// Visited
+$linkColor:        #268bd2 !default;
+$linkColorHover:   #dc322f !default;
+$linkColorFocus:   #2aa198 !default;
+$linkColorActive:  #859900 !default;
+$linkColorVisited: #d33682 !default;
 
-$base-table-header-color: #c3d9ff !default;						// Table header
-$base-table-stripe-color: #e5ecf9 !default;						// Table even row
+$tableHeader: #93a1a1 !default;
+$tableStripe: #eee8d5 !default;
+
+$colorisePallete: $baseColor $altColor $quietColor $loudColor $headerColor $baseBackground $altBackground $quietBackground $loudBackground $headerBackground $linkColor $linkColorHover $linkColorFocus $linkColorActive $linkColorVisited $tableHeader $tableStripe;
 ~~~
 
 ## Mixins
@@ -49,30 +53,100 @@ The extension provide the following mixins:
 
 ### Utilities
 
-* `colorise-save()` : Save the current palletes into a `$colorise-pallete` list.
-* `colorise-restore()`: Restore the saved pallete to current colors.
+* `coloriseSave()` : Save the current palletes into a `$colorisePallete` list.
+* `coloriseRestore()`: Restore the saved pallete to current colors.
+
+The pallete is as following order:
+
+~~~
+$colorisePallete: $baseColor $altColor $quietColor $loudColor $headerColor $baseBackground $altBackground $quietBackground $loudBackground $headerBackground $linkColor $linkColorHover $linkColorFocus $linkColorActive $linkColorVisited $tableHeader $tableStripe;
+~~~
 
 ### Generate color pallete
 
-* `light-colorise($light-text-color, $light-link-color, $dark-background-color)`: Generate all other color values, based on 2 light colors (for text and link colors) and 1 dark color (background).
-* `dark-colorise($dark-text-color, $dark-link-color, $light-background-color)`: The opposite of `light-colories`.
-* `colorise($text-color, $link-color, $background-color)`: Based on background color's lightness, this function will call one of 2 above function, with equalize colors for text and link. All calculations are based on color's lightness.
-* `colorise-analogous($background-color)`: Generate an analogous colors for text-color and link-color, pair with provided background, then put it to `colorise`.
-* `colorise-triadic($background-color)`: Like above, but use __triadic__ colors for text and link.
-* `colorise-complement($background-color)`: Like above, but use __split-complement__ colors for text and link.
+* `@mixin coloriseLight($lightText, $lightLink, $darkBackground, $threshold: 10)`: Generate all other color values, based on 2 light colors (for text and link colors) and 1 dark color (background). The threshold help you refine how different the color are.
+* `@mixin coloriseDark($darkText, $darkLink, $lightBackground, $threshold: 10)`: The opposite of `coloriseLight`. 
+* `@mixin colorise($text, $link, $background, $threshold)`: Based on background color's lightness, this function will call one of 2 above function, with equalize colors for text and link. All calculations are based on color's lightness. The threshold help you refine how different the color are.
+* `@mixin coloriseAnalogous($background-color, $threshold: 10)`: Generate an analogous colors for text-color and link-color, pair with provided background, then put it to `colorise`.
+* `@mixin coloriseTriadic($background-color, $threshold: 10)`: Like above, but use __triadic__ colors for text and link.
+* `@mixin coloriseComplement($background-color, $threshold: 10)`: Like above, but use __split-complement__ colors for text and link.
+* `@function luma($aColor)`: Return the luma value (0 - 255) of current color.
+* `@mixin coloriseLuma($text-color, $link-color, $background, $threshold:10, $diff:150)`: Calculate the right color based on luma. It inspect the background color, and increase or decrease the text-color and link-color to match the background luma.
+* `@mixin coloriseLumaAnalogous($background, $threshold:10, $diff:150)`: Like the original version, but use luma instead of lightness.
+* `@mixin coloriseLumaTriadic($background, $threshold:10, $diff:150)`: Like the original version, but use luma instead of lightness.
+* `@mixin coloriseLumaComplement($background, $threshold:10, $diff:150)`: Like the original version, but use luma instead of lightness.
+* `@mixin schemeAnalogous($aColor)`: Assign `$originalColor`, `$accentColor` and `$supportColor` by Analogous color model.
+* `@mixin schemeTriadic($aColor)`: Assign `$originalColor`, `$accentColor` and `$supportColor` by Triadic color model.
+* `@mixin schemeComplement($aColor)`: Assign `$originalColor`, `$accentColor` and `$supportColor` by Complement color model.
+* `@mixin coloriseSimple()`: Generate a color pallete based on the `$originalColor` specified.
+* `@mixin coloriseSave($toVar: false)`: Save the pallete to the `$toVar`. 
+* `@mixin coloriseSave($fromVar: false)`: Restore the pallete from the `$fromVar`. 
 
-### Using colorise pallete
 
-* `colorise-me($nested: true)`: Write background and color attributes for text, container and link. If `$nested = false`, the color is applied for `body` element. Leave default if you want to _colorise_ a region and all its child elements.
-* `colorise-bp($nested)`: Extend the colorise-me above, using [BlueprintCSS](http://blueprintcss.org) default colors attributes.
+### Automatic Coloring a Block
 
-### Experimentals: Using luma instead of color lightness
+* `coloriseMe($nested: true)`: Write background and color attributes for text, container and link. If `$nested = false`, the color is applied for `body` element. Leave default if you want to _colorise_ a region and all its child elements.
+* `coloriseBp($nested)`: Extend the colorise-me above, using [BlueprintCSS](http://blueprintcss.org) default colors attributes.
 
-See this link to understand what [luma](http://en.wikipedia.org/wiki/Luma_(video)) is: 
+### Example
 
-This extension has some experimental mixins for luma color calculations:
+#### BlueprintCSS Default Colors
 
-* `luma-colorise($text-color, $link-color, $background)`: Calculate the right color based on luma. It inspect the background color, and increase or decrease the text-color and link-color to match the background luma.
-* `luma-colorise-analogous($background)`: Like the original version, but use luma instead of lightness.
-* `luma-colorise-triadic($background)`: Like the original version, but use luma instead of lightness.
-* `luma-colorise-complement($background)`: Like the original version, but use luma instead of lightness.
+The following code use original colorise method to quickly colorise a page with BlueprintCSS colors:
+
+~~~
+/* Filename: colors.scss */
+@import "colorise";
+@include coloriseBp(false);
+~~~
+
+#### Colorise per Region
+
+The following code use original colorise method to quickly colorise a page with BlueprintCSS colors:
+
+~~~
+/* Filename: colors.scss */
+@import "colorise";
+
+// Apply Basic colors for Headers, Links, Text and Background
+// Using the Complement Scheme
+@include colorise(#333, DarkRed, #FFF);
+@include coloriseBp(false);
+
+// Save the pallete for later use
+@include coloriseSave;
+
+// Switch the header to Dark Tone...
+// Then colorise its link, text, header and Background using `coloriseMe`
+#header {
+	@include colorise(LightGray, LightYellow, #222);
+	@include coloriseMe;
+	// Save the pallete for later use...
+	$headerPallete = coloriseSave();
+}
+
+// Then switch back to the original pallete
+@include coloriseRestore;
+
+// Now we want to do a full colorise for the footer, but with coloriseLuma version...
+// With all tables and stuff coloring... use `coloriseBp`
+#footer {
+	@include coloriseLuma(LightGray, LightYellow, #222);
+	@include coloriseBp;
+}
+
+// Now we restore the pallete again..
+// Then theming the sidebar
+@include coloriseRestore();
+#main .sidebar {
+	@include coloriseMe;
+}
+
+// In case we want to theme something from our header, then lets restore the header Pallete..
+@include coloriseRestore($headerPallete);
+#header #logo a {
+	color: $baseColor;
+}
+~~~
+
+Nice, isn't it?
