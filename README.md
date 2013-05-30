@@ -1,7 +1,13 @@
-colorise
-========
+# colorise
 
 A Compass extension for create color scheme.
+
+## Demo
+
+Thank to Github, I set up some demo on my github page. Here they are:
+
+* [Colorise Testing Page __17 standard CSS colors__](https://dinhtrung.github.io/test-colorise.html)
+* [Colorise Testing Page in Luma mode __17 standard CSS colors__](https://dinhtrung.github.io/test-colorise-luma.html)
 
 ## Usage
 
