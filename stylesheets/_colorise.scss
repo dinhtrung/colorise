@@ -346,9 +346,13 @@ $colorisePallete: $baseColor $altColor $quietColor $loudColor $headerColor $base
       td { background-color: $baseBackground; color: $baseColor;}
       th { background-color: $baseBackground; color: $headerColor; }
     }
-		&.even, &:nth-child(2n) {
+	&.even, &:nth-child(2n) {
     	td { background-color: $tableStripe; 	color: $baseColor;}
     	th { background-color: $tableStripe;  color: $headerColor; }
+  	}
+  	&:hover {
+  		td { background-color: $quietBackground; 	color: $altColor;}
+    	th { background-color: $loudBackground;  color: $baseColor; }
   	}
   }
   tfoot {
